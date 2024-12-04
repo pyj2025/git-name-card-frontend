@@ -11,7 +11,7 @@ const NameCardClient = () => {
   const { id } = useParams();
 
   return (
-    <main className="min-h-screen p-4 bg-gray-900 text-gray-100">
+    <div className="min-h-screen p-4 bg-gray-900 text-gray-100">
       <div className="max-w-2xl mx-auto mt-10">
         <button
           onClick={() => router.push('/')}
@@ -51,7 +51,7 @@ const NameCardClient = () => {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 
