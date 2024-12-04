@@ -29,12 +29,19 @@ const NameCardClient = ({ id }: NameCardClientProps) => {
             <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center">
               <FaUserCircle size={36} />
             </div>
-            <div>
+            <div className="flex-1">
               <h1 className="text-2xl font-bold">{id}</h1>
               <p className="text-gray-400">GitHub User</p>
             </div>
+            <div>
+              <QRCode
+                value={`https://github.com/`}
+                size={80}
+                bgColor="#f0f0f0"
+                fgColor="#333333"
+              />
+            </div>
           </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div className="p-4 bg-gray-700 rounded-lg">
               <p className="font-semibold text-gray-300">Public Repos</p>
@@ -46,14 +53,6 @@ const NameCardClient = ({ id }: NameCardClientProps) => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center mt-6">
-        <QRCode
-          value={`https://github.com/`}
-          size={100}
-          bgColor="#f0f0f0"
-          fgColor="#333333"
-        />
       </div>
     </main>
   );
