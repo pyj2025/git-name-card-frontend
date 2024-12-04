@@ -2,16 +2,13 @@
 
 import React from 'react';
 import QRCode from 'react-qr-code';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { IoChevronBack } from 'react-icons/io5';
 import { FaUserCircle } from 'react-icons/fa';
 
-type NameCardClientProps = {
-  id: string;
-};
-
-const NameCardClient = ({ id }: NameCardClientProps) => {
+const NameCardClient = () => {
   const router = useRouter();
+  const { id } = useParams();
 
   return (
     <main className="min-h-screen p-4 bg-gray-900 text-gray-100">
@@ -35,7 +32,7 @@ const NameCardClient = ({ id }: NameCardClientProps) => {
             </div>
             <div>
               <QRCode
-                value={`https://github.com/`}
+                value={`https://github.com/pyj2025`}
                 size={80}
                 bgColor="#f0f0f0"
                 fgColor="#333333"

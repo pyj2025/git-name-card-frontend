@@ -1,5 +1,5 @@
-import NameCardClient from '@/components/NameCardClient';
+import NameCardClient from '../../../components/NameCardClient';
 
-export default function NameCardPage({ params }: { params: { id: string } }) {
-  return <NameCardClient id={params.id} />;
+export default function NameCardPage() {
+  return <NameCardClient />;
 }
