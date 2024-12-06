@@ -7,7 +7,7 @@ interface PageProps {
 }
 
 export default async function NameCardPage({ params }: PageProps) {
-  const { id } = await Promise.resolve(params);
+  const { id } = params;
 
   return (
     <div className="min-h-screen p-4 bg-gray-50">
