@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdEmail, MdLanguage } from 'react-icons/md';
 import { FaLinkedin } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
@@ -10,6 +10,16 @@ interface NameCardClientProps {
 }
 
 const NameCardClient = ({ id }: NameCardClientProps) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg">
       <div className="flex items-center gap-4 mb-6">
