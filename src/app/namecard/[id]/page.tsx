@@ -6,7 +6,7 @@ interface PageProps {
   };
 }
 
-export default function NameCardPage({ params }: PageProps) {
+export default async function NameCardPage({ params }: PageProps) {
   const { id } = params;
 
   return (
