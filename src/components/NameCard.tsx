@@ -16,6 +16,7 @@ interface NameCardProps {
 
 const NameCard = ({ id }: NameCardProps) => {
   const router = useRouter();
+
   const nameCardRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -25,6 +26,7 @@ const NameCard = ({ id }: NameCardProps) => {
 
   const handleDownload = async () => {
     if (!nameCardRef.current) return;
+
     try {
       const dataUrl = await htmlToImage.toPng(nameCardRef.current, {
         quality: 1.0,
