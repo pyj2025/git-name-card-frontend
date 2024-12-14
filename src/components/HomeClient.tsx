@@ -20,7 +20,7 @@ const HomeClient = () => {
         <div className="bg-white p-8 rounded-lg shadow-lg">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              GitHub NameCard Generator
+              GitHub Card Generator
             </h1>
           </div>
 

@@ -11,8 +11,8 @@ export function useGithubData(githubId: string) {
 
   return {
     name: useQuery({
-      queryKey: ['name'],
-      queryFn: () => fetchGithubData('getName')
+      queryKey: ['name', githubId],
+      queryFn: () => fetchGithubData(`get_name/${githubId}`)
     }),
     email: useQuery({
       queryKey: ['email', githubId],
