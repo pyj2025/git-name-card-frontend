@@ -15,12 +15,12 @@ const HomeClient = () => {
   };
 
   return (
-    <div className="min-h-screen p-4 bg-gray-50">
-      <div className="max-w-2xl mx-auto mt-10">
+    <div className="min-h-screen p-4 bg-gray-50 flex items-center justify-center">
+      <div className="w-full max-w-2xl">
         <div className="bg-white p-8 rounded-lg shadow-lg">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              GitHub NameCard Generator
+              GitHub Card Generator
             </h1>
           </div>
 

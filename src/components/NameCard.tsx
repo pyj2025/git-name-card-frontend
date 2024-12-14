@@ -16,6 +16,7 @@ interface NameCardProps {
 
 const NameCard = ({ id }: NameCardProps) => {
   const router = useRouter();
+
   const nameCardRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -25,12 +26,13 @@ const NameCard = ({ id }: NameCardProps) => {
 
   const handleDownload = async () => {
     if (!nameCardRef.current) return;
+
     try {
       const dataUrl = await htmlToImage.toPng(nameCardRef.current, {
         quality: 1.0,
         backgroundColor: '#ffffff',
-        width: 700,
-        height: 340,
+        width: 670,
+        height: 280,
         style: {
           transform: 'scale(1)',
           transformOrigin: 'top left',
@@ -61,7 +63,7 @@ const NameCard = ({ id }: NameCardProps) => {
 
       <div
         ref={nameCardRef}
-        style={{ width: '700px', height: '300px', marginBottom: '20px' }}
+        // style={{ width: '700px', height: '300px', marginBottom: '20px' }}
       >
         <NameCardClient id={id} />
       </div>
