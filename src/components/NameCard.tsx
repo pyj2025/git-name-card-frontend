@@ -61,10 +61,7 @@ const NameCard = ({ id }: NameCardProps) => {
         <IoChevronBack size={24} />
       </button>
 
-      <div
-        ref={nameCardRef}
-        // style={{ width: '700px', height: '300px', marginBottom: '20px' }}
-      >
+      <div ref={nameCardRef}>
         <NameCardClient id={id} />
       </div>
 
