@@ -14,18 +14,6 @@ export function useGithubData(githubId: string) {
       queryKey: ['name', githubId],
       queryFn: () => fetchGithubData(`get_name/${githubId}`)
     }),
-    email: useQuery({
-      queryKey: ['email', githubId],
-      queryFn: () => fetchGithubData(`get_email/${githubId}`)
-    }),
-    website: useQuery({
-      queryKey: ['website', githubId],
-      queryFn: () => fetchGithubData(`get_website/${githubId}`)
-    }),
-    linkedin: useQuery({
-      queryKey: ['linkedin', githubId],
-      queryFn: () => fetchGithubData(`get_linkedin/${githubId}`)
-    }),
     repos: useQuery({
       queryKey: ['repos', githubId],
       queryFn: () => fetchGithubData(`get_repos/${githubId}`)

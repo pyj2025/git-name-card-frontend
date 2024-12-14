@@ -10,8 +10,7 @@ interface NameCardClientProps {
 }
 
 const NameCardClient = ({ id }: NameCardClientProps) => {
-  const { name, email, website, linkedin, repos, followers } =
-    useGithubData(id);
+  const { name, repos, followers } = useGithubData(id);
 
   const [mounted, setMounted] = useState(false);
   const [displayName, setDisplayName] = useState();
