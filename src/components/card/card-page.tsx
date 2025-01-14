@@ -6,18 +6,18 @@ import { IoChevronBack } from 'react-icons/io5';
 import * as htmlToImage from 'html-to-image';
 import dynamic from 'next/dynamic';
 
-const NameCardClient = dynamic(() => import('./NameCardClient'), {
+const NameCard = dynamic(() => import('./name-card'), {
   ssr: false,
 });
 
-interface NameCardProps {
+interface CardPageProps {
   id: string;
 }
 
-const NameCard = ({ id }: NameCardProps) => {
+const CardPage = ({ id }: CardPageProps) => {
   const router = useRouter();
 
-  const nameCardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -25,10 +25,10 @@ const NameCard = ({ id }: NameCardProps) => {
   }, []);
 
   const handleDownload = async () => {
-    if (!nameCardRef.current) return;
+    if (!cardRef.current) return;
 
     try {
-      const dataUrl = await htmlToImage.toPng(nameCardRef.current, {
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
         quality: 1.0,
         backgroundColor: '#ffffff',
         width: 670,
@@ -61,8 +61,8 @@ const NameCard = ({ id }: NameCardProps) => {
         <IoChevronBack size={24} />
       </button>
 
-      <div ref={nameCardRef}>
-        <NameCardClient id={id} />
+      <div ref={cardRef}>
+        <NameCard id={id} />
       </div>
 
       <button
@@ -75,4 +75,4 @@ const NameCard = ({ id }: NameCardProps) => {
   );
 };
 
-export default NameCard;
+export default CardPage;
