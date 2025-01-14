@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
-import { useGithubData } from '../../hooks/useGithubData';
+import { useGithubData } from '../../../hooks/useGithubData';
 
-interface NameCardClientProps {
+interface NameCardProps {
   id: string;
 }
 
-const NameCardClient = ({ id }: NameCardClientProps) => {
+const NameCard = ({ id }: NameCardProps) => {
   const { name, repos, followers } = useGithubData(id);
 
   const [mounted, setMounted] = useState(false);
@@ -65,4 +65,4 @@ const NameCardClient = ({ id }: NameCardClientProps) => {
   );
 };
 
-export default NameCardClient;
+export default NameCard;

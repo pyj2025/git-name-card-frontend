@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const HomeClient = () => {
+const Home = () => {
   const [githubId, setGithubId] = useState('');
   const router = useRouter();
 
@@ -63,4 +63,4 @@ const HomeClient = () => {
   );
 };
 
-export default HomeClient;
+export default Home;
