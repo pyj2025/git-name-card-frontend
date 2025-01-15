@@ -32,33 +32,46 @@ const NameCard = ({ id }: NameCardProps) => {
   }
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg">
-      <div className="flex items-center gap-4 mb-6">
-        <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
-          <FaUser className="w-12 h-12 text-gray-400" />
+    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm">
+      <div className="flex flex-col items-center space-y-4">
+        {/* GitHub Icon */}
+        <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+          <FaUser className="w-8 h-8 text-gray-400" />
         </div>
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold">{displayName}</h1>
-          <p className="text-gray-600 mt-1">@{id}</p>
-          <p className="text-gray-600">GitHub User</p>
-        </div>
+
+        {/* QR Code */}
         <div className="flex-shrink-0">
           <QRCode
             value={`https://github.com/${id}`}
-            size={80}
+            size={60}
             bgColor="#f0f0f0"
             fgColor="#333333"
           />
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <p className="font-semibold">Public Repos</p>
-          <p className="text-xl">{displayRepos}</p>
-        </div>
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <p className="font-semibold">Followers</p>
-          <p className="text-xl">{displayFollowers}</p>
+
+        {/* GitHub URL */}
+        <a
+          href={`https://github.com/${id}`}
+          className="text-blue-600 hover:underline text-sm"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          www.github.com/{id}
+        </a>
+
+        {/* Divider */}
+        <div className="w-full border-t border-gray-200 my-2"></div>
+
+        {/* Stats */}
+        <div className="w-full space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Public Repos:</span>
+            <span className="font-semibold">{displayRepos}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Followers:</span>
+            <span className="font-semibold">{displayFollowers}</span>
+          </div>
         </div>
       </div>
     </div>
