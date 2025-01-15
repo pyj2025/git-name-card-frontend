@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { FaUser } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
 import { useGithubData } from '../../../hooks/useGithubData';
 
@@ -31,15 +31,20 @@ const NameCard = ({ id }: NameCardProps) => {
     return null;
   }
 
+  const today = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm">
-      <div className="flex flex-col items-center space-y-4">
-        {/* GitHub Icon */}
-        <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-          <FaUser className="w-8 h-8 text-gray-400" />
+    <div className="bg-white p-8 rounded-lg shadow-lg w-[360px] min-h-[500px]">
+      <div className="flex flex-col items-center space-y-2">
+        <div className="flex items-center gap-2">
+          <FaGithub className="w-6 h-6 text-black" />
+          <span className="text-xl font-medium">Git Card</span>
         </div>
 
-        {/* QR Code */}
         <div className="flex-shrink-0">
           <QRCode
             value={`https://github.com/${id}`}
@@ -49,7 +54,8 @@ const NameCard = ({ id }: NameCardProps) => {
           />
         </div>
 
-        {/* GitHub URL */}
+        <p className="text-gray-500 text-sm">{today}</p>
+
         <a
           href={`https://github.com/${id}`}
           className="text-blue-600 hover:underline text-sm"
@@ -59,22 +65,22 @@ const NameCard = ({ id }: NameCardProps) => {
           www.github.com/{id}
         </a>
 
-        {/* Divider */}
-        <div className="w-full border-t border-gray-200 my-2"></div>
+        <div className="w-full flex items-center gap-1">
+          <div className="flex-1 border-b border-dashed border-gray-300"></div>
+        </div>
 
-        {/* Stats */}
-        <div className="w-full space-y-2">
+        <div className="w-full space-y-2 text-gray-500">
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">Name:</span>
-            <span className="font-semibold">{displayName}</span>
+            <span>Name:</span>
+            <span>{displayName}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">Public Repos:</span>
-            <span className="font-semibold">{displayRepos}</span>
+            <span>Public Repos:</span>
+            <span>{displayRepos}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">Followers:</span>
-            <span className="font-semibold">{displayFollowers}</span>
+            <span>Followers:</span>
+            <span>{displayFollowers}</span>
           </div>
         </div>
       </div>
