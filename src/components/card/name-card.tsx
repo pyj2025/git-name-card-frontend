@@ -65,6 +65,10 @@ const NameCard = ({ id }: NameCardProps) => {
         {/* Stats */}
         <div className="w-full space-y-2">
           <div className="flex justify-between items-center">
+            <span className="text-gray-600">Name:</span>
+            <span className="font-semibold">{displayName}</span>
+          </div>
+          <div className="flex justify-between items-center">
             <span className="text-gray-600">Public Repos:</span>
             <span className="font-semibold">{displayRepos}</span>
           </div>
