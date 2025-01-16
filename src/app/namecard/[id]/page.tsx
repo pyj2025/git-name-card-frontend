@@ -10,8 +10,8 @@ export default async function NameCardPage({ params }: PageProps) {
   const { id } = params;
 
   return (
-    <div className="min-h-screen p-4 bg-gray-50 flex items-center justify-center border">
-      <div className="w-full max-w-2xl border">
+    <div className="h-screen bg-gray-50">
+      <div className="h-full w-full max-w-2xl mx-auto">
         <CardPage id={id} />
       </div>
     </div>

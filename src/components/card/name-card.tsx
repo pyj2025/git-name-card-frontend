@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
+import Barcode from 'react-barcode';
 import { useGithubData } from '../../../hooks/useGithubData';
 
 interface NameCardProps {
@@ -81,6 +82,12 @@ const NameCard = ({ id }: NameCardProps) => {
           <div className="flex justify-between items-center">
             <span>Followers:</span>
             <span>{displayFollowers}</span>
+          </div>
+        </div>
+
+        <div className="w-full space-y-2 text-gray-500">
+          <div className="flex justify-center mt-4">
+            <Barcode value={id} height={40} />
           </div>
         </div>
       </div>
