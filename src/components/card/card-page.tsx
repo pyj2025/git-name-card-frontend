@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation';
 import { IoChevronBack } from 'react-icons/io5';
 import * as htmlToImage from 'html-to-image';
 import dynamic from 'next/dynamic';
+import { FiDownload, FiShare2 } from 'react-icons/fi';
+
+const ButtonStyle =
+  'p-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow transform hover:-translate-y-0.5 flex items-center justify-center gap-2';
+
+const ButtonIconStyle = 'w-5 h-5';
 
 const NameCard = dynamic(() => import('./name-card'), {
   ssr: false,
@@ -47,14 +53,39 @@ const CardPage = ({ id }: CardPageProps) => {
     }
   };
 
+  const handleShare = async () => {
+    if (!cardRef.current) return;
+
+    try {
+      const dataUrl = await htmlToImage.toPng(cardRef.current);
+      const blob = await (await fetch(dataUrl)).blob();
+      const file = new File([blob], `${id}-github-card.png`, {
+        type: 'image/png',
+      });
+
+      if (navigator.share) {
+        await navigator.share({
+          title: 'GitHub Card',
+          text: 'GitHub Card',
+          files: [file],
+        });
+      } else {
+        const shareUrl = window.location.href;
+        await navigator.clipboard.writeText(shareUrl);
+        alert('Link copied to clipboard!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
+
   if (!isMounted) {
     return null;
   }
 
   return (
-    <div className="min-h-screen p-6 flex flex-col">
-      {/* Back button container */}
-      <div className="w-full">
+    <div className="h-full flex flex-col">
+      <div className="p-4">
         <button
           onClick={() => router.push('/')}
           className="p-2 hover:bg-gray-100 rounded-full transition-colors flex items-center text-gray-600"
@@ -63,20 +94,21 @@ const CardPage = ({ id }: CardPageProps) => {
         </button>
       </div>
 
-      {/* Card container - centered */}
-      <div className="flex-grow flex items-center justify-center">
+      <div className="flex-grow flex items-center justify-center px-6">
         <div ref={cardRef}>
           <NameCard id={id} />
         </div>
       </div>
 
-      {/* Download button container */}
-      <div className="w-full max-w-sm mx-auto">
-        <button
-          onClick={handleDownload}
-          className="w-full p-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white font-medium rounded-lg hover:from-gray-800 hover:to-gray-900 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-        >
-          Download
+      <div className="w-full max-w-sm mx-auto grid grid-cols-2 gap-3 p-6">
+        <button onClick={handleDownload} className={ButtonStyle}>
+          <FiDownload className={ButtonIconStyle} />
+          <span>Download</span>
+        </button>
+
+        <button onClick={handleShare} className={ButtonStyle}>
+          <FiShare2 className={ButtonIconStyle} />
+          <span>Share</span>
         </button>
       </div>
     </div>
