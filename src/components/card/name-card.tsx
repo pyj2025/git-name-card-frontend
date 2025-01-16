@@ -5,6 +5,7 @@ import { FaGithub } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
 import Barcode from 'react-barcode';
 import { useGithubData } from '../../../hooks/useGithubData';
+import Separator from './separator';
 
 interface NameCardProps {
   id: string;
@@ -57,20 +58,24 @@ const NameCard = ({ id }: NameCardProps) => {
 
         <p className="text-gray-500 text-sm">{today}</p>
 
-        <a
-          href={`https://github.com/${id}`}
-          className="text-blue-600 hover:underline text-sm"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          www.github.com/{id}
-        </a>
+        <Separator />
 
-        <div className="w-full flex items-center gap-1">
-          <div className="flex-1 border-b border-dashed border-gray-300"></div>
+        <div className="w-full space-y-2 text-gray-500 text-sm">
+          <div className="flex justify-between items-center">
+            <span>Name:</span>
+            <span>
+              {displayName} @{id}
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span>URL:</span>
+            <span>www.github.com/{id}</span>
+          </div>
         </div>
 
-        <div className="w-full space-y-2 text-gray-500">
+        <Separator />
+
+        <div className="w-full space-y-2 text-gray-500 text-sm">
           <div className="flex justify-between items-center">
             <span>Name:</span>
             <span>{displayName}</span>
@@ -85,10 +90,10 @@ const NameCard = ({ id }: NameCardProps) => {
           </div>
         </div>
 
-        <div className="w-full space-y-2 text-gray-500">
-          <div className="flex justify-center mt-4">
-            <Barcode value={id} height={40} />
-          </div>
+        <Separator />
+
+        <div className="mt-auto pt-4">
+          <Barcode value={id} height={40} />
         </div>
       </div>
     </div>

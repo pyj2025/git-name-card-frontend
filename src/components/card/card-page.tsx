@@ -34,14 +34,7 @@ const CardPage = ({ id }: CardPageProps) => {
 
     try {
       const dataUrl = await htmlToImage.toPng(cardRef.current, {
-        quality: 1.0,
-        backgroundColor: '#ffffff',
-        width: 670,
-        height: 280,
-        style: {
-          transform: 'scale(1)',
-          transformOrigin: 'top left',
-        },
+        quality: 1,
       });
 
       const link = document.createElement('a');
