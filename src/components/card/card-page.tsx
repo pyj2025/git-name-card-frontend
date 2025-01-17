@@ -123,13 +123,11 @@ const CardPage = ({ id }: CardPageProps) => {
       await waitForImageLoad(avatar);
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     return htmlToImage.toPng(cardRef.current, {
       quality: 1,
       cacheBust: true,
-      pixelRatio: 3,
-      backgroundColor: '#ffffff',
       style: {
         transform: 'scale(1)',
         transformOrigin: 'top left',
@@ -157,7 +155,7 @@ const CardPage = ({ id }: CardPageProps) => {
       link.click();
       document.body.removeChild(link);
 
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
     } catch (error) {
       console.error('Error generating image:', error);
       alert('Failed to generate image. Please try again.');
