@@ -1,4 +1,5 @@
 import React from 'react';
+import { format } from 'date-fns';
 import { FaGithub, FaUser } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
 import Separator from './separator';
@@ -84,13 +85,17 @@ const NameCard = ({ data }: NameCardProps) => {
           {data.created_at && (
             <div className="flex justify-between items-center">
               <span>Born:</span>
-              <span>{data.created_at}</span>
+              <span>
+                {format(new Date(data.created_at), 'MMM dd yyyy, HH:mm:ss')}
+              </span>
             </div>
           )}
           {data.updated_at && (
             <div className="flex justify-between items-center">
               <span>Updated At:</span>
-              <span>{data.updated_at}</span>
+              <span>
+                {format(new Date(data.updated_at), 'MMM dd yyyy, HH:mm:ss')}
+              </span>
             </div>
           )}
           {data.location && (
