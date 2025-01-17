@@ -3,7 +3,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { IoChevronBack } from 'react-icons/io5';
-import * as htmlToImage from 'html-to-image';
 import dynamic from 'next/dynamic';
 import { FiDownload, FiShare2 } from 'react-icons/fi';
 import LoadingSpinner from './loading-spinner';
@@ -130,7 +129,7 @@ const CardPage = ({ id }: CardPageProps) => {
     let dataUrl = '';
     let i = 0;
     const maxAttempts = isSafari ? 5 : 1;
-    let cycle = [];
+    const cycle = [];
     let repeat = true;
 
     while (repeat && i < maxAttempts) {
