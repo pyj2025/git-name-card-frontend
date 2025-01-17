@@ -6,9 +6,10 @@ import { IoChevronBack } from 'react-icons/io5';
 import * as htmlToImage from 'html-to-image';
 import dynamic from 'next/dynamic';
 import { FiDownload, FiShare2 } from 'react-icons/fi';
+import LoadingSpinner from './loading-spinner';
 
 const ButtonStyle =
-  'p-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow transform hover:-translate-y-0.5 flex items-center justify-center gap-2';
+  'p-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg transition-all duration-200 shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:transform-none enabled:hover:bg-gray-50 enabled:hover:shadow enabled:hover:-translate-y-0.5';
 
 const ButtonIconStyle = 'w-5 h-5';
 
@@ -23,7 +24,8 @@ interface CardPageProps {
 const CardPage = ({ id }: CardPageProps) => {
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -88,18 +90,30 @@ const CardPage = ({ id }: CardPageProps) => {
       </div>
 
       <div className="flex-grow flex items-center justify-center px-6">
-        <div ref={cardRef}>
-          <NameCard id={id} />
-        </div>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <div ref={cardRef}>
+            <NameCard id={id} setLoading={setIsLoading} />
+          </div>
+        )}
       </div>
 
       <div className="w-full max-w-sm mx-auto grid grid-cols-2 gap-3 p-6">
-        <button onClick={handleDownload} className={ButtonStyle}>
+        <button
+          onClick={handleDownload}
+          className={ButtonStyle}
+          disabled={isLoading}
+        >
           <FiDownload className={ButtonIconStyle} />
           <span>Download</span>
         </button>
 
-        <button onClick={handleShare} className={ButtonStyle}>
+        <button
+          onClick={handleShare}
+          className={ButtonStyle}
+          disabled={isLoading}
+        >
           <FiShare2 className={ButtonIconStyle} />
           <span>Share</span>
         </button>
