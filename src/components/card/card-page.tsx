@@ -3,11 +3,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { IoChevronBack } from 'react-icons/io5';
-import * as htmlToImage from 'html-to-image';
 import dynamic from 'next/dynamic';
 import { FiDownload, FiShare2 } from 'react-icons/fi';
 import LoadingSpinner from './loading-spinner';
 import { UserType } from './name-card';
+import { toPng } from 'html-to-image';
 
 const NameCard = dynamic(() => import('./name-card'), {
   ssr: false,
@@ -125,15 +125,38 @@ const CardPage = ({ id }: CardPageProps) => {
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return htmlToImage.toPng(cardRef.current, {
-      quality: 1,
-      cacheBust: true,
-      style: {
-        transform: 'scale(1)',
-        transformOrigin: 'top left',
-      },
-      imagePlaceholder: preloadedImage,
-    });
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    let dataUrl = '';
+    let i = 0;
+    const maxAttempts = isSafari ? 5 : 1;
+    const cycle = [];
+    let repeat = true;
+
+    while (repeat && i < maxAttempts) {
+      dataUrl = await toPng(cardRef.current, {
+        cacheBust: true,
+        pixelRatio: isSafari ? 1 : 3,
+        quality: 1,
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left',
+          paddingBottom: '100px',
+        },
+        filter: (node) => {
+          const className = node.className || '';
+          return (
+            typeof className === 'string' &&
+            !className.includes('skip-download')
+          );
+        },
+      });
+      i += 1;
+      cycle[i] = dataUrl.length;
+
+      if (dataUrl.length > cycle[i - 1]) repeat = false;
+    }
+
+    return dataUrl;
   };
 
   const handleDownload = async () => {
