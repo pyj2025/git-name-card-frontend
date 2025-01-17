@@ -125,54 +125,6 @@ const CardPage = ({ id }: CardPageProps) => {
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    await htmlToImage.toPng(cardRef.current, {
-      quality: 1,
-      cacheBust: true,
-      style: {
-        transform: 'scale(1)',
-        transformOrigin: 'top left',
-      },
-      imagePlaceholder: preloadedImage,
-      filter: (node) => {
-        const className = node.className || '';
-        return (
-          typeof className === 'string' && !className.includes('skip-download')
-        );
-      },
-    });
-
-    await htmlToImage.toPng(cardRef.current, {
-      quality: 1,
-      cacheBust: true,
-      style: {
-        transform: 'scale(1)',
-        transformOrigin: 'top left',
-      },
-      imagePlaceholder: preloadedImage,
-      filter: (node) => {
-        const className = node.className || '';
-        return (
-          typeof className === 'string' && !className.includes('skip-download')
-        );
-      },
-    });
-
-    await htmlToImage.toPng(cardRef.current, {
-      quality: 1,
-      cacheBust: true,
-      style: {
-        transform: 'scale(1)',
-        transformOrigin: 'top left',
-      },
-      imagePlaceholder: preloadedImage,
-      filter: (node) => {
-        const className = node.className || '';
-        return (
-          typeof className === 'string' && !className.includes('skip-download')
-        );
-      },
-    });
-
     return htmlToImage.toPng(cardRef.current, {
       quality: 1,
       cacheBust: true,
@@ -181,12 +133,6 @@ const CardPage = ({ id }: CardPageProps) => {
         transformOrigin: 'top left',
       },
       imagePlaceholder: preloadedImage,
-      filter: (node) => {
-        const className = node.className || '';
-        return (
-          typeof className === 'string' && !className.includes('skip-download')
-        );
-      },
     });
   };
 
