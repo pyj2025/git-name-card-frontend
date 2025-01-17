@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { IoChevronBack } from 'react-icons/io5';
 import * as htmlToImage from 'html-to-image';
@@ -8,14 +8,36 @@ import dynamic from 'next/dynamic';
 import { FiDownload, FiShare2 } from 'react-icons/fi';
 import LoadingSpinner from './loading-spinner';
 
+const NameCard = dynamic(() => import('./name-card'), {
+  ssr: false,
+});
+
 const ButtonStyle =
   'p-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg transition-all duration-200 shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:transform-none enabled:hover:bg-gray-50 enabled:hover:shadow enabled:hover:-translate-y-0.5';
 
 const ButtonIconStyle = 'w-5 h-5';
 
-const NameCard = dynamic(() => import('./name-card'), {
-  ssr: false,
-});
+type UserType = {
+  login: string;
+  id: number;
+  avatar_url: string;
+  html_url: string;
+  name: string;
+  company: string | null;
+  blog: string;
+  location: string | null;
+  email: string | null;
+  bio: string | null;
+  twitter_username: string | null;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  created_at: string;
+  updated_at: string;
+  hireable: boolean | null;
+  type: string;
+};
 
 interface CardPageProps {
   id: string;
@@ -24,12 +46,61 @@ interface CardPageProps {
 const CardPage = ({ id }: CardPageProps) => {
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+
+  const [userData, setUserData] = useState<UserType>({
+    login: '',
+    id: 0,
+    avatar_url: '',
+    html_url: '',
+    name: '',
+    company: null,
+    blog: '',
+    location: null,
+    email: null,
+    bio: null,
+    twitter_username: null,
+    public_repos: 0,
+    public_gists: 0,
+    followers: 0,
+    following: 0,
+    created_at: '',
+    updated_at: '',
+    hireable: null,
+    type: '',
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username: id }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const data = await response.json();
+        setUserData((prev) =>
+          JSON.stringify(prev) === JSON.stringify(data) ? prev : data
+        );
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
 
   const handleDownload = async () => {
     if (!cardRef.current) return;
@@ -74,10 +145,6 @@ const CardPage = ({ id }: CardPageProps) => {
     }
   };
 
-  if (!isMounted) {
-    return null;
-  }
-
   return (
     <div className="h-full flex flex-col">
       <div className="p-4">
@@ -94,7 +161,7 @@ const CardPage = ({ id }: CardPageProps) => {
           <LoadingSpinner />
         ) : (
           <div ref={cardRef}>
-            <NameCard id={id} setLoading={setIsLoading} />
+            <NameCard data={userData} />
           </div>
         )}
       </div>
