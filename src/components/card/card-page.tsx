@@ -125,7 +125,7 @@ const CardPage = ({ id }: CardPageProps) => {
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    return htmlToImage.toPng(cardRef.current, {
+    return htmlToImage.toJpeg(cardRef.current, {
       quality: 1,
       cacheBust: true,
       style: {
