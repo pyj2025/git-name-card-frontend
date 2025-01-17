@@ -7,6 +7,7 @@ import * as htmlToImage from 'html-to-image';
 import dynamic from 'next/dynamic';
 import { FiDownload, FiShare2 } from 'react-icons/fi';
 import LoadingSpinner from './loading-spinner';
+import { UserType } from './name-card';
 
 const NameCard = dynamic(() => import('./name-card'), {
   ssr: false,
@@ -16,28 +17,6 @@ const ButtonStyle =
   'p-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg transition-all duration-200 shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:transform-none enabled:hover:bg-gray-50 enabled:hover:shadow enabled:hover:-translate-y-0.5';
 
 const ButtonIconStyle = 'w-5 h-5';
-
-type UserType = {
-  login: string;
-  id: number;
-  avatar_url: string;
-  html_url: string;
-  name: string;
-  company: string | null;
-  blog: string;
-  location: string | null;
-  email: string | null;
-  bio: string | null;
-  twitter_username: string | null;
-  public_repos: number;
-  public_gists: number;
-  followers: number;
-  following: number;
-  created_at: string;
-  updated_at: string;
-  hireable: boolean | null;
-  type: string;
-};
 
 interface CardPageProps {
   id: string;

@@ -3,8 +3,30 @@ import { FaGithub, FaUser } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
 import Separator from './separator';
 
+export type UserType = {
+  login: string;
+  id: number;
+  avatar_url: string;
+  html_url: string;
+  name: string;
+  company: string | null;
+  blog: string;
+  location: string | null;
+  email: string | null;
+  bio: string | null;
+  twitter_username: string | null;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  created_at: string;
+  updated_at: string;
+  hireable: boolean | null;
+  type: string;
+};
+
 interface NameCardProps {
-  data: any;
+  data: UserType;
 }
 
 const NameCard = ({ data }: NameCardProps) => {
