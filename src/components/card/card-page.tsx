@@ -123,7 +123,7 @@ const CardPage = ({ id }: CardPageProps) => {
       await waitForImageLoad(avatar);
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     let dataUrl = '';
@@ -133,27 +133,31 @@ const CardPage = ({ id }: CardPageProps) => {
     let repeat = true;
 
     while (repeat && i < maxAttempts) {
-      dataUrl = await toPng(cardRef.current, {
-        cacheBust: true,
-        pixelRatio: isSafari ? 1 : 3,
-        quality: 1,
-        style: {
-          transform: 'scale(1)',
-          transformOrigin: 'top left',
-          paddingBottom: '100px',
-        },
-        filter: (node) => {
-          const className = node.className || '';
-          return (
-            typeof className === 'string' &&
-            !className.includes('skip-download')
-          );
-        },
-      });
-      i += 1;
-      cycle[i] = dataUrl.length;
+      try {
+        dataUrl = await toPng(cardRef.current, {
+          cacheBust: true,
+          pixelRatio: isSafari ? 1 : 3,
+          quality: 1,
+          style: {
+            transform: 'scale(1)',
+            transformOrigin: 'top left',
+            paddingBottom: '100px',
+          },
+          filter: (node) => {
+            const className = node.className || '';
+            return (
+              typeof className === 'string' &&
+              !className.includes('skip-download')
+            );
+          },
+        });
+        i += 1;
+        cycle[i] = dataUrl.length;
 
-      if (dataUrl.length > cycle[i - 1]) repeat = false;
+        if (dataUrl.length > cycle[i - 1]) repeat = false;
+      } catch (error) {
+        console.error('Error generating image:', error);
+      }
     }
 
     return dataUrl;
