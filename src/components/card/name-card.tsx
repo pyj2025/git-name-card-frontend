@@ -26,25 +26,24 @@ export type UserType = {
   type: string;
 };
 
+const SectionContainerStyle = 'w-full space-y-1 text-gray-500 text-sm';
+const SectionLineStyle = 'flex justify-between items-center';
+
 interface NameCardProps {
   data: UserType;
 }
 
 const NameCard = ({ data }: NameCardProps) => {
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg w-[360px] min-h-[600px]">
+    <div className="bg-white p-4 pt-6 rounded-lg shadow-lg w-[360px] min-h-[600px] flex flex-col justify-between">
       <div className="flex flex-col space-y-4">
-        <div className="flex justify-between items-center">
+        <div className={SectionLineStyle}>
           <div className="flex items-center gap-2">
             <FaGithub className="w-6 h-6 text-black" />
-            <span className="text-xl font-medium">Git Card</span>
+            <span className="text-xl font-medium">
+              {data.name || 'N/A'} @{data.login}
+            </span>
           </div>
-          <QRCode
-            value={`https://github.com/${data.login}`}
-            size={60}
-            bgColor="#f0f0f0"
-            fgColor="#333333"
-          />
         </div>
 
         <div className="flex justify-center">
@@ -63,15 +62,7 @@ const NameCard = ({ data }: NameCardProps) => {
           )}
         </div>
 
-        <div className="w-full space-y-1 text-gray-500 text-sm">
-          {data.name && (
-            <div className="flex justify-between items-center">
-              <span>Name:</span>
-              <span>
-                {data.name} @{data.login}
-              </span>
-            </div>
-          )}
+        <div className={SectionContainerStyle}>
           {data.bio && (
             <div className="flex flex-col">
               <span>Bio:</span>
@@ -81,17 +72,15 @@ const NameCard = ({ data }: NameCardProps) => {
         </div>
         <Separator />
 
-        <div className="w-full space-y-1 text-gray-500 text-sm">
+        <div className={SectionContainerStyle}>
           {data.created_at && (
-            <div className="flex justify-between items-center">
+            <div className={SectionLineStyle}>
               <span>Born:</span>
-              <span>
-                {format(new Date(data.created_at), 'MMM dd yyyy, HH:mm:ss')}
-              </span>
+              <span>{format(new Date(data.created_at), 'MMM dd yyyy')}</span>
             </div>
           )}
           {data.updated_at && (
-            <div className="flex justify-between items-center">
+            <div className={SectionLineStyle}>
               <span>Updated At:</span>
               <span>
                 {format(new Date(data.updated_at), 'MMM dd yyyy, HH:mm:ss')}
@@ -99,27 +88,67 @@ const NameCard = ({ data }: NameCardProps) => {
             </div>
           )}
           {data.location && (
-            <div className="flex justify-between items-center">
+            <div className={SectionLineStyle}>
               <span>Location:</span>
               <span>{data.location}</span>
             </div>
           )}
         </div>
         <Separator />
-        <div className="w-full space-y-1 text-gray-500 text-sm">
-          <div className="flex justify-between items-center">
-            <span>Following:</span>
-            <span>{data.following}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span>Followers:</span>
-            <span>{data.followers}</span>
-          </div>
-          <div className="flex justify-between items-center">
+        <div className={SectionContainerStyle}>
+          <div className={SectionLineStyle}>
             <span>Public Repos:</span>
             <span>{data.public_repos}</span>
           </div>
+          <div className={SectionLineStyle}>
+            <span>Public Gists:</span>
+            <span>{data.public_gists}</span>
+          </div>
+          <div className={SectionLineStyle}>
+            <span>Following:</span>
+            <span>{data.following}</span>
+          </div>
+          <div className={SectionLineStyle}>
+            <span>Followers:</span>
+            <span>{data.followers}</span>
+          </div>
         </div>
+      </div>
+
+      <div className="mt-4">
+        {data.blog ? (
+          <div className="flex justify-center gap-16">
+            <div className="flex flex-col items-center">
+              <div className="text-sm text-gray-500 mb-1">Github</div>
+              <QRCode
+                value={data.html_url}
+                size={40}
+                bgColor="#f0f0f0"
+                fgColor="#333333"
+              />
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="text-sm text-gray-500 mb-1">Blog</div>
+              <QRCode
+                value={data.blog}
+                size={40}
+                bgColor="#f0f0f0"
+                fgColor="#333333"
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="flex justify-center">
+            <div className="flex flex-col items-center">
+              <QRCode
+                value={data.html_url}
+                size={60}
+                bgColor="#f0f0f0"
+                fgColor="#333333"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
