@@ -135,7 +135,9 @@ const CardPage = ({ id }: CardPageProps) => {
       imagePlaceholder: preloadedImage,
       filter: (node) => {
         const className = node.className || '';
-        return !className.includes('skip-download');
+        return (
+          typeof className === 'string' && !className.includes('skip-download')
+        );
       },
     });
 
@@ -149,7 +151,9 @@ const CardPage = ({ id }: CardPageProps) => {
       imagePlaceholder: preloadedImage,
       filter: (node) => {
         const className = node.className || '';
-        return !className.includes('skip-download');
+        return (
+          typeof className === 'string' && !className.includes('skip-download')
+        );
       },
     });
 
@@ -163,7 +167,9 @@ const CardPage = ({ id }: CardPageProps) => {
       imagePlaceholder: preloadedImage,
       filter: (node) => {
         const className = node.className || '';
-        return !className.includes('skip-download');
+        return (
+          typeof className === 'string' && !className.includes('skip-download')
+        );
       },
     });
 
@@ -177,7 +183,9 @@ const CardPage = ({ id }: CardPageProps) => {
       imagePlaceholder: preloadedImage,
       filter: (node) => {
         const className = node.className || '';
-        return !className.includes('skip-download');
+        return (
+          typeof className === 'string' && !className.includes('skip-download')
+        );
       },
     });
   };
