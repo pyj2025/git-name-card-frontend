@@ -25,6 +25,7 @@ interface CardPageProps {
 const CardPage = ({ id }: CardPageProps) => {
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const [userData, setUserData] = useState<UserType>({
     login: '',
@@ -81,28 +82,86 @@ const CardPage = ({ id }: CardPageProps) => {
     }
   }, [id]);
 
+  const convertImageToBase64 = async (url: string): Promise<string> => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Error converting image:', error);
+      throw error;
+    }
+  };
+
   const handleDownload = async () => {
     if (!cardRef.current) return;
 
+    setIsGenerating(true);
     try {
+      if (userData.avatar_url) {
+        const avatar = cardRef.current.querySelector('img');
+        if (avatar) {
+          const base64Image = await convertImageToBase64(userData.avatar_url);
+          avatar.src = base64Image;
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+      }
+
       const dataUrl = await htmlToImage.toPng(cardRef.current, {
         quality: 1,
+        cacheBust: true,
+        pixelRatio: 2,
+        style: {
+          transform: 'scale(1)',
+          transformOrigin: 'top left',
+        },
+        filter: (node) => {
+          // Skip background images and problematic elements if any
+          return !node.classList?.contains('skip-download');
+        },
       });
 
+      // For mobile devices, create a temporary link and click it
       const link = document.createElement('a');
       link.download = `${id}-github-card.png`;
       link.href = dataUrl;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error('Error generating image:', error);
+      alert('Failed to generate image. Please try again.');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
   const handleShare = async () => {
     if (!cardRef.current) return;
 
+    setIsGenerating(true);
     try {
-      const dataUrl = await htmlToImage.toPng(cardRef.current);
+      // Use the same image conversion process for sharing
+      if (userData.avatar_url) {
+        const avatar = cardRef.current.querySelector('img');
+        if (avatar) {
+          const base64Image = await convertImageToBase64(userData.avatar_url);
+          avatar.src = base64Image;
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+      }
+
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 1,
+        cacheBust: true,
+        pixelRatio: 2,
+      });
+
       const blob = await (await fetch(dataUrl)).blob();
       const file = new File([blob], `${id}-github-card.png`, {
         type: 'image/png',
@@ -121,6 +180,9 @@ const CardPage = ({ id }: CardPageProps) => {
       }
     } catch (error) {
       console.error('Error sharing:', error);
+      alert('Failed to share. Please try again.');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -149,19 +211,19 @@ const CardPage = ({ id }: CardPageProps) => {
         <button
           onClick={handleDownload}
           className={ButtonStyle}
-          disabled={isLoading}
+          disabled={isLoading || isGenerating}
         >
           <FiDownload className={ButtonIconStyle} />
-          <span>Download</span>
+          <span>{isGenerating ? 'Processing...' : 'Download'}</span>
         </button>
 
         <button
           onClick={handleShare}
           className={ButtonStyle}
-          disabled={isLoading}
+          disabled={isLoading || isGenerating}
         >
           <FiShare2 className={ButtonIconStyle} />
-          <span>Share</span>
+          <span>{isGenerating ? 'Processing...' : 'Share'}</span>
         </button>
       </div>
     </div>
