@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaGithub, FaUser } from 'react-icons/fa';
 import QRCode from 'react-qr-code';
-import Barcode from 'react-barcode';
 import Separator from './separator';
 import LoadingSpinner from './loading-spinner';
 
@@ -183,9 +182,6 @@ const NameCard = ({ id, setLoading }: NameCardProps) => {
             <span>{userData.public_repos}</span>
           </div>
         </div>
-        {/* <div className="mt-auto pt-2 border">
-          <Barcode value={id} height={20} />
-        </div> */}
       </div>
     </div>
   );
