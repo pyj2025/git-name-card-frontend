@@ -123,9 +123,51 @@ const CardPage = ({ id }: CardPageProps) => {
       await waitForImageLoad(avatar);
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    return htmlToImage.toJpeg(cardRef.current, {
+    await htmlToImage.toPng(cardRef.current, {
+      quality: 1,
+      cacheBust: true,
+      style: {
+        transform: 'scale(1)',
+        transformOrigin: 'top left',
+      },
+      imagePlaceholder: preloadedImage,
+      filter: (node) => {
+        const className = node.className || '';
+        return !className.includes('skip-download');
+      },
+    });
+
+    await htmlToImage.toPng(cardRef.current, {
+      quality: 1,
+      cacheBust: true,
+      style: {
+        transform: 'scale(1)',
+        transformOrigin: 'top left',
+      },
+      imagePlaceholder: preloadedImage,
+      filter: (node) => {
+        const className = node.className || '';
+        return !className.includes('skip-download');
+      },
+    });
+
+    await htmlToImage.toPng(cardRef.current, {
+      quality: 1,
+      cacheBust: true,
+      style: {
+        transform: 'scale(1)',
+        transformOrigin: 'top left',
+      },
+      imagePlaceholder: preloadedImage,
+      filter: (node) => {
+        const className = node.className || '';
+        return !className.includes('skip-download');
+      },
+    });
+
+    return htmlToImage.toPng(cardRef.current, {
       quality: 1,
       cacheBust: true,
       style: {
@@ -155,7 +197,7 @@ const CardPage = ({ id }: CardPageProps) => {
       link.click();
       document.body.removeChild(link);
 
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
     } catch (error) {
       console.error('Error generating image:', error);
       alert('Failed to generate image. Please try again.');
