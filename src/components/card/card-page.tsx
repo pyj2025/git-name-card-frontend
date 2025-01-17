@@ -26,6 +26,7 @@ const CardPage = ({ id }: CardPageProps) => {
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [preloadedImage, setPreloadedImage] = useState<string>('');
 
   const [userData, setUserData] = useState<UserType>({
     login: '',
@@ -70,6 +71,11 @@ const CardPage = ({ id }: CardPageProps) => {
         setUserData((prev) =>
           JSON.stringify(prev) === JSON.stringify(data) ? prev : data
         );
+
+        if (data.avatar_url) {
+          const base64Image = await convertImageToBase64(data.avatar_url);
+          setPreloadedImage(base64Image);
+        }
       } catch (error) {
         console.error('Error fetching user data:', error);
       } finally {
@@ -98,41 +104,60 @@ const CardPage = ({ id }: CardPageProps) => {
     }
   };
 
-  const handleDownload = async () => {
-    if (!cardRef.current) return;
+  const waitForImageLoad = (img: HTMLImageElement): Promise<void> => {
+    return new Promise((resolve) => {
+      if (img.complete) {
+        resolve();
+      } else {
+        img.onload = () => resolve();
+      }
+    });
+  };
 
+  const generateImage = async (): Promise<string> => {
+    if (!cardRef.current) throw new Error('Card reference not found');
+
+    const avatar = cardRef.current.querySelector('img');
+    if (avatar && preloadedImage) {
+      avatar.src = preloadedImage;
+      await waitForImageLoad(avatar);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    return htmlToImage.toPng(cardRef.current, {
+      quality: 1,
+      cacheBust: true,
+      pixelRatio: 3,
+      backgroundColor: '#ffffff',
+      style: {
+        transform: 'scale(1)',
+        transformOrigin: 'top left',
+      },
+      imagePlaceholder: preloadedImage,
+      filter: (node) => {
+        const className = node.className || '';
+        return !className.includes('skip-download');
+      },
+    });
+  };
+
+  const handleDownload = async () => {
     setIsGenerating(true);
     try {
-      if (userData.avatar_url) {
-        const avatar = cardRef.current.querySelector('img');
-        if (avatar) {
-          const base64Image = await convertImageToBase64(userData.avatar_url);
-          avatar.src = base64Image;
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        }
-      }
+      const dataUrl = await generateImage();
 
-      const dataUrl = await htmlToImage.toPng(cardRef.current, {
-        quality: 1,
-        cacheBust: true,
-        pixelRatio: 2,
-        style: {
-          transform: 'scale(1)',
-          transformOrigin: 'top left',
-        },
-        filter: (node) => {
-          // Skip background images and problematic elements if any
-          return !node.classList?.contains('skip-download');
-        },
-      });
+      const blob = await (await fetch(dataUrl)).blob();
+      const blobUrl = URL.createObjectURL(blob);
 
-      // For mobile devices, create a temporary link and click it
       const link = document.createElement('a');
       link.download = `${id}-github-card.png`;
-      link.href = dataUrl;
+      link.href = blobUrl;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
     } catch (error) {
       console.error('Error generating image:', error);
       alert('Failed to generate image. Please try again.');
@@ -142,26 +167,9 @@ const CardPage = ({ id }: CardPageProps) => {
   };
 
   const handleShare = async () => {
-    if (!cardRef.current) return;
-
     setIsGenerating(true);
     try {
-      // Use the same image conversion process for sharing
-      if (userData.avatar_url) {
-        const avatar = cardRef.current.querySelector('img');
-        if (avatar) {
-          const base64Image = await convertImageToBase64(userData.avatar_url);
-          avatar.src = base64Image;
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        }
-      }
-
-      const dataUrl = await htmlToImage.toPng(cardRef.current, {
-        quality: 1,
-        cacheBust: true,
-        pixelRatio: 2,
-      });
-
+      const dataUrl = await generateImage();
       const blob = await (await fetch(dataUrl)).blob();
       const file = new File([blob], `${id}-github-card.png`, {
         type: 'image/png',
