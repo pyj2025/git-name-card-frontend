@@ -137,18 +137,10 @@ const CardPage = ({ id }: CardPageProps) => {
         dataUrl = await toPng(cardRef.current, {
           cacheBust: true,
           pixelRatio: isSafari ? 1 : 3,
-          quality: 1,
+          quality: 0.9,
           style: {
             transform: 'scale(1)',
             transformOrigin: 'top left',
-            paddingBottom: '100px',
-          },
-          filter: (node) => {
-            const className = node.className || '';
-            return (
-              typeof className === 'string' &&
-              !className.includes('skip-download')
-            );
           },
         });
         i += 1;
